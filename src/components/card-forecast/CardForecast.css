@@ -1,9 +1,0 @@
-.CardForecast{
-    width: 300px;
-    height: 300px;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    background-color: aqua;
-    border: 1px solid black;
-}

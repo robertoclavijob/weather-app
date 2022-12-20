@@ -2,7 +2,11 @@ import { useState } from "react";
 import { getCoordsByAddress } from "../../services/geocoding-service";
 import { getWeeklyForecast } from "../../services/weather-service";
 
-function AddressSearch() {
+interface AddressSearchProps{
+  onUpdateForecast: (lat: number, long: number) => void;
+}
+
+function AddressSearch(props: AddressSearchProps) {
   const [address, setAddress] = useState('');
 
   const getBrowserLocation = () => {
@@ -20,9 +24,8 @@ function AddressSearch() {
     const firstMatch = addressMatches[0] || null;
     if (firstMatch) {
       const { x, y } = firstMatch.coordinates;
-      const weatherResult = await getWeeklyForecast(x, y);
 
-      console.log(weatherResult.data.properties)
+      props.onUpdateForecast(x, y);
     }
   };
 

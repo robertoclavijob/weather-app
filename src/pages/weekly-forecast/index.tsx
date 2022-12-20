@@ -1,27 +1,29 @@
+import { useState } from "react";
 import AddressSearch from "../../components/address-search";
 import CardForecast from "../../components/card-forecast";
+import { ForecastItemDto } from "../../dto/forecast-item.dto";
+import { getWeeklyForecast } from "../../services/weather-service";
 import "./WeeklyForecast.css";
 
 function WeeklyForecast() {
-  const forecastItems = [
-    { day: "Today", degrees: 30, unit: "F" },
-    { day: "Tomorrow", degrees: 35, unit: "F" },
-    { day: "Wednesday", degrees: 40, unit: "F" },
-    { day: "Thursday", degrees: 20, unit: "F" },
-    { day: "Friday", degrees: 25, unit: "F" },
-    { day: "Saturday", degrees: 25, unit: "F" },
-    { day: "Sunday", degrees: 25, unit: "F" },
-  ];
+  const [forecast, setForecast] = useState([]);
+
+  const updateForecast = async (lat: number, long: number) => {
+    const weatherResult = await getWeeklyForecast(lat, long);
+    setForecast(weatherResult.data.properties.periods);
+  };
+
   return (
     <div className="WeeklyForecast">
-      <AddressSearch></AddressSearch>
+      <AddressSearch onUpdateForecast={updateForecast}></AddressSearch>
       <span>The weekly forecast</span>
-      {forecastItems.map((item, index) => (
+      {forecast.map((item: ForecastItemDto, index) => (
         <CardForecast
-          key={index}
-          day={item.day}
-          degrees={item.degrees}
-          unit={item.unit}
+          key={item.number}
+          day={item.name}
+          degrees={item.temperature}
+          unit={item.temperatureUnit}
+          backgroundImage={item.icon}
         ></CardForecast>
       ))}
     </div>
