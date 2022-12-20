@@ -1,9 +1,11 @@
 import axios from "axios";
+const config = {
+  headers: {
+    "User-Agent": "(weather-app-fb04a.web.app, claviro85@gmail.com)",
+  },
+};
 
 export const getWeeklyForecast = async (lat: number, long: number) => {
-  //TODO Remove hard-coded coordinates
-  lat = 39.7456;
-  long = -97.0892;
   console.log(`Fetching forecast for coordinates: ${lat},${long}`);
   const gridPointsResult = await getGridpoints(lat, long);
   const gridPointsUrl = gridPointsResult.data?.properties?.forecast;
@@ -13,9 +15,9 @@ export const getWeeklyForecast = async (lat: number, long: number) => {
 };
 
 export const getForecast = (gridEndpoint: string) => {
-  return axios.get(gridEndpoint);
+  return axios.get(gridEndpoint, config);
 };
 
 export const getGridpoints = (lat: number, long: number) => {
-  return axios.get(`https://api.weather.gov/points/${lat},${long}`);
+  return axios.get(`https://api.weather.gov/points/${lat},${long}`, config);
 };

@@ -18,14 +18,21 @@ function AddressSearch(props: AddressSearchProps) {
 
   const searchAddress = async (searchTerm: React.ChangeEvent<HTMLSelectElement>) => {
     setAddress(searchTerm.target.value);
+    //This is causing CORS issues
     const geocodeResult = await getCoordsByAddress(searchTerm.target.value);
 
     const addressMatches = geocodeResult.data.result.addressMatches;
     const firstMatch = addressMatches[0] || null;
     if (firstMatch) {
-      const { x, y } = firstMatch.coordinates;
+      let { x, y } = firstMatch.coordinates;
 
-      props.onUpdateForecast(x, y);
+      
+      //TODO Remove hard-coded coordinates
+      // props.onUpdateForecast(x, y);
+      x = 39.7456;
+      y = -97.0892;
+
+      props.onUpdateForecast(x,y);
     }
   };
 

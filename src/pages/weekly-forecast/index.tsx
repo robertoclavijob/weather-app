@@ -44,7 +44,7 @@ function WeeklyForecast() {
   return (
     <div className="WeeklyForecast">
       <AddressSearch onUpdateForecast={updateForecast}></AddressSearch>
-      <span>The weekly forecast</span>
+      <span>The weekly forecast Updated</span>
       {forecast.map((item: DayNightForecastDto, index) => (
         <DayNightForecast {...item}></DayNightForecast>
       ))}
