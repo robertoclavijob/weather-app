@@ -1,4 +1,5 @@
-import CardForecast from "../card-forecast";
+import AddressSearch from "../../components/address-search";
+import CardForecast from "../../components/card-forecast";
 import "./WeeklyForecast.css";
 
 function WeeklyForecast() {
@@ -13,6 +14,7 @@ function WeeklyForecast() {
   ];
   return (
     <div className="WeeklyForecast">
+      <AddressSearch></AddressSearch>
       <span>The weekly forecast</span>
       {forecastItems.map((item, index) => (
         <CardForecast

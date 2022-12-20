@@ -1,12 +1,9 @@
 import './App.css';
-import WeeklyForecast from './components/weekly-forecast';
-import AddressSearch from './components/address-search/AddressSearch';
-import { useState } from 'react';
+import WeeklyForecast from './pages/weekly-forecast';
 
 function App() {
   return (
     <div className="App">
-      <AddressSearch></AddressSearch>
       <WeeklyForecast></WeeklyForecast>
     </div>
   );
