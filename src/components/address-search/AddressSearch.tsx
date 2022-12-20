@@ -7,19 +7,22 @@ function AddressSearch() {
 
   const getBrowserLocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      getWeeklyForecast(position.coords.latitude, position.coords.longitude);
+        // Uncomment the next code to use browser location
+        // getWeeklyForecast(position.coords.latitude, position.coords.longitude);
     });
   };
 
   const searchAddress = async (searchTerm: React.ChangeEvent<HTMLSelectElement>) => {
     setAddress(searchTerm.target.value);
-    const result = await getCoordsByAddress(searchTerm.target.value);
+    const geocodeResult = await getCoordsByAddress(searchTerm.target.value);
 
-    const addressMatches = result.data.result.addressMatches;
+    const addressMatches = geocodeResult.data.result.addressMatches;
     const firstMatch = addressMatches[0] || null;
     if (firstMatch) {
       const { x, y } = firstMatch.coordinates;
-      getWeeklyForecast(x, y);
+      const weatherResult = await getWeeklyForecast(x, y);
+
+      console.log(weatherResult.data.properties)
     }
   };
 
