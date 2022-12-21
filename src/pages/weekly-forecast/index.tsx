@@ -84,6 +84,7 @@ function WeeklyForecast() {
 
       {periodForecast.map((item: any, index) => (
         <PeriodsForecast
+          key={index}
           name={item.name}
           periods={item.periods}
         ></PeriodsForecast>
