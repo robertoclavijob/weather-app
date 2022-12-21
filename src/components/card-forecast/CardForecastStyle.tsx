@@ -7,6 +7,5 @@ export const CardForecastStyle = (backgroundImage: string) => ({
   margin: "20px",
   display: "flex",
   flexDirection: "column" as "column",
-  //   backgroundColor: "aqua",
   border: "1px solid black",
 });

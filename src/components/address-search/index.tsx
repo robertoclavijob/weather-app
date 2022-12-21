@@ -4,25 +4,17 @@ import { getWeeklyForecast } from "../../services/weather-service";
 
 interface AddressSearchProps{
   onUpdateForecast: (lat: number, long: number) => void;
+  stations: any[];
 }
 
 function AddressSearch(props: AddressSearchProps) {
   const [address, setAddress] = useState('');
 
-  const getBrowserLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-        // Uncomment the next code to use browser location
-        // getWeeklyForecast(position.coords.latitude, position.coords.longitude);
-    });
-  };
-
   const searchAddress = async (searchTerm: React.ChangeEvent<HTMLSelectElement>) => {
+    let station = props.stations[Number(searchTerm.target.value)];
+    let [long, lat] = station.geometry.coordinates;
     setAddress(searchTerm.target.value);
-    //TODO Remove hard-coded coordinates
-      const x = 39.7456;
-      const y = -97.0892;
-
-      props.onUpdateForecast(x,y);
+    props.onUpdateForecast(lat, long);
 
     //TODO The next code calls the geocoding api (geocoding.geo.census.gov), but it is causing CORS issues
 
@@ -42,10 +34,10 @@ function AddressSearch(props: AddressSearchProps) {
         onChange={searchAddress}
         value={address}
       >
-        <option>4600 Silver Hill Rd, Washington, DC 20233</option>
-        <option>200 Dogwood Dr, Gaithersburg, MD 20877, USA</option>
+        {props.stations.map((stationItem, index)=>(
+          <option key={index} value={index}>{stationItem.properties.name}</option>
+        ))}
       </select>
-      <button onClick={getBrowserLocation}>Use Current location</button>
     </>
   );
 }

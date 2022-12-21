@@ -21,3 +21,7 @@ export const getForecast = (gridEndpoint: string) => {
 export const getGridpoints = (lat: number, long: number) => {
   return axios.get(`https://api.weather.gov/points/${lat},${long}`, config);
 };
+
+export const getStations = ()=>{
+    return axios.get(`https://api.weather.gov/stations/`, config);
+}

@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressSearch from "../../components/address-search";
 import DayNightForecast from "../../components/day-night-forecast";
 import { DayNightForecastDto } from "../../dtos/day-night-forecast.dto";
 import { DayEnum } from "../../enums/day.enum";
-import { getWeeklyForecast } from "../../services/weather-service";
+import { getStations, getWeeklyForecast } from "../../services/weather-service";
 import "./WeeklyForecast.css";
 
 function WeeklyForecast() {
   const [forecast, setForecast] = useState<DayNightForecastDto[]>([]);
+  const [stations, setStations] = useState<any[]>([]);
 
+  useEffect(() => {
+    updateStations();
+  }, []);
+
+  const updateStations = async ()=>{
+    let stationsResult = await getStations();
+    setStations(stationsResult.data.features);
+  }
   const updateForecast = async (lat: number, long: number) => {
     const weatherResult = await getWeeklyForecast(lat, long);
     let forecastByDay: DayNightForecastDto = {} as DayNightForecastDto;
@@ -41,10 +50,10 @@ function WeeklyForecast() {
     setForecast(forecastByDayList);
   };
 
+
   return (
     <div className="WeeklyForecast">
-      <AddressSearch onUpdateForecast={updateForecast}></AddressSearch>
-      <span>The weekly forecast Updated</span>
+      <AddressSearch onUpdateForecast={updateForecast} stations={stations}></AddressSearch>
       {forecast.map((item: DayNightForecastDto, index) => (
         <DayNightForecast {...item}></DayNightForecast>
       ))}
