@@ -72,9 +72,6 @@ function WeeklyForecast() {
 
   return (
     <div className="WeeklyForecast">
-      <span className="WeeklyForecast__SelectTitle">
-        Select a Weather Station
-      </span>
       <AddressSearch
         onUpdateForecast={updateForecast}
         stations={stations}

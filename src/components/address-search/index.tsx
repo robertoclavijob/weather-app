@@ -29,13 +29,16 @@ function AddressSearch(props: AddressSearchProps) {
 
   return (
     <>
+      <h1>Select a Weather Station</h1>
       <select
         placeholder="Search for an address"
         onChange={searchAddress}
         value={address}
       >
-        {props.stations.map((stationItem, index)=>(
-          <option key={index} value={index}>{stationItem.properties.name}</option>
+        {props.stations.map((stationItem, index) => (
+          <option key={index} value={index}>
+            {stationItem.properties.name}
+          </option>
         ))}
       </select>
     </>

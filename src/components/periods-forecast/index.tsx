@@ -8,7 +8,7 @@ interface PeriodsForecastProps {
 function PeriodsForecast(props: PeriodsForecastProps) {
   return (
     <div className="PeriodsForecast">
-      <span>{props.name}</span>
+      <h2>{props.name}</h2>
       <div className="PeriodsForecast__Periods">
         {props.periods.map((item: any, index: number) => (
           <CardForecast
