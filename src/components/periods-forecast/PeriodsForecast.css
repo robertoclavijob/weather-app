@@ -1,8 +1,8 @@
-.DayNightForecast{
+.PeriodsForecast{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.DayNightForecast__Periods{
+.PeriodsForecast__Periods{
     display: flex;
 }

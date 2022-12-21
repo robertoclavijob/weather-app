@@ -1,82 +1,94 @@
-import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import AddressSearch from "../../components/address-search";
-import DayNightForecast from "../../components/day-night-forecast";
-import { DayNightForecastDto } from "../../dtos/day-night-forecast.dto";
-import { DayEnum } from "../../enums/day.enum";
+import PeriodsForecast from "../../components/periods-forecast";
+import { PeriodForecastDto } from "../../dtos/period-forecast.dto";
 import { getStations, getWeeklyForecast } from "../../services/weather-service";
 import "./WeeklyForecast.css";
 
 function WeeklyForecast() {
-  const [forecast, setForecast] = useState<DayNightForecastDto[]>([]);
+  
+  const [periodForecast, setPeriodForecast] = useState<PeriodForecastDto[]>([]);
   const [stations, setStations] = useState<any[]>([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     updateStations();
   }, []);
 
-  const updateStations = async ()=>{
+  const updateStations = async () => {
     setLoading(true);
     let stationsResult = await getStations();
     setStations(stationsResult.data.features);
     setLoading(false);
-  }
+  };
   const updateForecast = async (lat: number, long: number) => {
     setLoading(true);
-    setError('');
-    setForecast([]);
+    setError("");
+    setPeriodForecast([]);
 
-    try{
+    try {
       const weatherResult = await getWeeklyForecast(lat, long);
-      let forecastByDay: DayNightForecastDto = {} as DayNightForecastDto;
+      const forecastByDayList = groupByDayNumber(
+        weatherResult.data.properties.periods
+      );
 
-      const forecastByDayList = [];
-      for (let forecastItem of weatherResult.data.properties.periods) {
-        const nameFirstWord = forecastItem.name.split(" ").shift();
-        if (!forecastByDay.name) {
-          if (forecastItem.number < 2) {
-            forecastByDay.name = DayEnum.TODAY;
-          } else {
-            forecastByDay.name = nameFirstWord;
-          }
-        }
-  
-        if (!forecastByDay.day) {
-          forecastByDay.day = forecastItem;
-          continue;
-        }
-  
-        if (!forecastByDay.night) {
-          forecastByDay.night = forecastItem;
-        }
-  
-        if (forecastByDay.name) {
-          forecastByDayList.push(forecastByDay);
-          forecastByDay = {} as DayNightForecastDto;
-        }
-      }
-      setForecast(forecastByDayList);
+      setPeriodForecast(forecastByDayList);
       setLoading(false);
-    }catch(error: any){
-      console.log(error)
+    } catch (error: any) {
+      console.log(error);
       setError(error.message);
       setLoading(false);
     }
   };
 
+  const groupByDayNumber = (periods: any) => {
+    let periodsForecastByDay: PeriodForecastDto[] = [];
+    let forecastByDayNumber = new Map<string, any>();
+
+    for (let forecastItem of periods) {
+      let startTime = new Date(forecastItem.startTime);
+
+      let mapIndex = `${startTime.getFullYear()}-${
+        startTime.getMonth() + 1
+      }-${startTime.getDate()}`;
+
+      let periodsByDayNumber = forecastByDayNumber.get(mapIndex) || [];
+      periodsByDayNumber.push(forecastItem);
+      forecastByDayNumber.set(mapIndex, periodsByDayNumber);
+    }
+
+    forecastByDayNumber.forEach((value, key) => {
+      let periodForecastItem: PeriodForecastDto = {} as PeriodForecastDto;
+      periodForecastItem.name = `${new Date(key).getDay()}`;
+      periodForecastItem.periods = value;
+      periodForecastItem.startDate = key;
+      periodsForecastByDay.push(periodForecastItem);
+    });
+
+    return periodsForecastByDay;
+  };
 
   return (
     <div className="WeeklyForecast">
-      <span className="WeeklyForecast__SelectTitle">Select a Weather Station</span>
-      <AddressSearch onUpdateForecast={updateForecast} stations={stations}></AddressSearch>
+      <span className="WeeklyForecast__SelectTitle">
+        Select a Weather Station
+      </span>
+      <AddressSearch
+        onUpdateForecast={updateForecast}
+        stations={stations}
+      ></AddressSearch>
 
-      {loading ? <span className="WeeklyForecast__Loading">Loading...</span>: null }
+      {loading ? (
+        <span className="WeeklyForecast__Loading">Loading...</span>
+      ) : null}
       <span className="WeeklyForecast__Error">{error}</span>
 
-      {forecast.map((item: DayNightForecastDto, index) => (
-        <DayNightForecast {...item}></DayNightForecast>
+      {periodForecast.map((item: any, index) => (
+        <PeriodsForecast
+          name={item.name}
+          periods={item.periods}
+        ></PeriodsForecast>
       ))}
     </div>
   );
