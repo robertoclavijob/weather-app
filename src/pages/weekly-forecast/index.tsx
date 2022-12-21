@@ -67,9 +67,12 @@ function WeeklyForecast() {
 
   return (
     <div className="WeeklyForecast">
+      <span className="WeeklyForecast__SelectTitle">Select a Weather Station</span>
       <AddressSearch onUpdateForecast={updateForecast} stations={stations}></AddressSearch>
+
       {loading ? <span className="WeeklyForecast__Loading">Loading...</span>: null }
       <span className="WeeklyForecast__Error">{error}</span>
+
       {forecast.map((item: DayNightForecastDto, index) => (
         <DayNightForecast {...item}></DayNightForecast>
       ))}
