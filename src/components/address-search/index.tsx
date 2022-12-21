@@ -18,7 +18,7 @@ function AddressSearch(props: AddressSearchProps) {
 
     //TODO The next code calls the geocoding api (geocoding.geo.census.gov), but it is causing CORS issues
 
-    // const geocodeResult = await getCoordsByAddress(searchTerm.target.value);
+    // const geocodeResult = await getCoordsByAddress(station.properties.name);
     // const addressMatches = geocodeResult.data.result.addressMatches;
     // const firstMatch = addressMatches[0] || null;
     // if (firstMatch) {

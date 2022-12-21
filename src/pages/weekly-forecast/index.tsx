@@ -18,8 +18,10 @@ function WeeklyForecast() {
   }, []);
 
   const updateStations = async ()=>{
+    setLoading(true);
     let stationsResult = await getStations();
     setStations(stationsResult.data.features);
+    setLoading(false);
   }
   const updateForecast = async (lat: number, long: number) => {
     setLoading(true);
