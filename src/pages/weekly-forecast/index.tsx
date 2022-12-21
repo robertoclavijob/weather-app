@@ -11,6 +11,7 @@ function WeeklyForecast() {
   const [forecast, setForecast] = useState<DayNightForecastDto[]>([]);
   const [stations, setStations] = useState<any[]>([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     updateStations();
@@ -21,6 +22,7 @@ function WeeklyForecast() {
     setStations(stationsResult.data.features);
   }
   const updateForecast = async (lat: number, long: number) => {
+    setLoading(true);
     setError('');
     setForecast([]);
 
@@ -54,9 +56,11 @@ function WeeklyForecast() {
         }
       }
       setForecast(forecastByDayList);
+      setLoading(false);
     }catch(error: any){
       console.log(error)
-      setError(error.message)
+      setError(error.message);
+      setLoading(false);
     }
   };
 
@@ -64,6 +68,7 @@ function WeeklyForecast() {
   return (
     <div className="WeeklyForecast">
       <AddressSearch onUpdateForecast={updateForecast} stations={stations}></AddressSearch>
+      {loading ? <span className="WeeklyForecast__Loading">Loading...</span>: null }
       <span className="WeeklyForecast__Error">{error}</span>
       {forecast.map((item: DayNightForecastDto, index) => (
         <DayNightForecast {...item}></DayNightForecast>
