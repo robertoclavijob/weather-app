@@ -4,10 +4,11 @@ interface CardForecastProps {
   degrees: number;
   unit: string;
   backgroundImage: string;
+  description: string;
 }
 function CardForecast(props: CardForecastProps) {
   return (
-    <div style={CardForecastStyle(props.backgroundImage)}>
+    <div style={CardForecastStyle(props.backgroundImage)} title={props.description}>
       <span>{props.day}</span>
       <span>
         {props.degrees}°{props.unit}

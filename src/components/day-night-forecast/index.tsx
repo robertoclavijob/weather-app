@@ -13,6 +13,7 @@ function DayNightForecast(props: DayNightForecastDto) {
           degrees={props.day.temperature}
           unit={props.day.temperatureUnit}
           backgroundImage={props.day.icon}
+          description={props.day.detailedForecast}
         ></CardForecast>
         <CardForecast
           key={props.night.number}
@@ -20,6 +21,7 @@ function DayNightForecast(props: DayNightForecastDto) {
           degrees={props.night.temperature}
           unit={props.night.temperatureUnit}
           backgroundImage={props.night.icon}
+          description={props.night.detailedForecast}
         ></CardForecast>
       </div>
     </div>
