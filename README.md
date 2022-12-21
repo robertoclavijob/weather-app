@@ -1,6 +1,8 @@
 # Weather App
 
 This is a web app implemented in React to display the weather forecast for different stations
+![screenshot](https://github.com/robertoclavijob/weather-app/blob/main/src/images/weather-app-screenshot.png?raw=true)
+
 
 ## Weather Forecast Provider
 [https://www.weather.gov/](https://www.weather.gov/)
