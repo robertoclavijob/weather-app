@@ -6,7 +6,7 @@ function DayNightForecast(props: DayNightForecastDto) {
   return (
     <div className="DayNightForecast">
       <span>{props.name}</span>
-      <div className='periods'>
+      <div className='DayNightForecast__Periods'>
         <CardForecast
           key={props.day.number}
           day={props.day.name}
