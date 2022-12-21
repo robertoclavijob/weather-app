@@ -3,6 +3,7 @@ import AddressSearch from "../../components/address-search";
 import PeriodsForecast from "../../components/periods-forecast";
 import { PeriodForecastDto } from "../../dtos/period-forecast.dto";
 import { getStations, getWeeklyForecast } from "../../services/weather-service";
+import { dayNumberToDay } from "../../util/date-handler";
 import "./WeeklyForecast.css";
 
 function WeeklyForecast() {
@@ -60,7 +61,7 @@ function WeeklyForecast() {
 
     forecastByDayNumber.forEach((value, key) => {
       let periodForecastItem: PeriodForecastDto = {} as PeriodForecastDto;
-      periodForecastItem.name = `${new Date(key).getDay()}`;
+      periodForecastItem.name = dayNumberToDay(new Date(key).getDay());
       periodForecastItem.periods = value;
       periodForecastItem.startDate = key;
       periodsForecastByDay.push(periodForecastItem);
