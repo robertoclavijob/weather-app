@@ -3,6 +3,6 @@
     flex-direction: column;
     align-items: center;
 }
-.Periods{
+.DayNightForecast__Periods{
     display: flex;
 }
